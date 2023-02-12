@@ -49,13 +49,13 @@ struct RP {
 
 // CONSTANTS
 static RP STICKS[7] = {
-    {&DDRD, PD6}, // a
-    {&DDRD, PD4}, // b
-    {&DDRD, PD2}, // c
-    {&DDRC, PC5}, // d
-    {&DDRC, PC4}, // e
-    {&DDRD, PD5}, // f
-    {&DDRD, PD3}, // g
+    {&DDRB, PB2}, // a (11)
+    {&DDRB, PB3}, // b (7)
+    {&DDRD, PD6}, // c (4)
+    {&DDRB, PB0}, // d (2)
+    {&DDRD, PD7}, // e (1)
+    {&DDRB, PB4}, // f (10)
+    {&DDRD, PD5}, // g (5)
 };
 
 static RP SEGMENTS[4] = {
@@ -87,6 +87,14 @@ void set_n_bit(uint8_t *bits, int bit, int n){
 void show_stick(char n) {
     struct RP *stick = get_stick_by_name(n);
     set_n_bit(stick->registry, 1, stick->pin);
+
+    // base anod only
+    uint8_t * port;
+    if (stick->registry == &DDRB) port = &PORTB;
+    if (stick->registry == &DDRC) port = &PORTC;
+    if (stick->registry == &DDRD) port = &PORTD;
+    set_n_bit(port, 1, stick->pin);
+
 };
 
 //
@@ -133,18 +141,18 @@ void clear_segment() {
 
 int main() {
     
-    activate_segment(0);
-    activate_segment(1);
-    activate_segment(2);
-    activate_segment(3);
+    // activate_segment(0);
+    // activate_segment(1);
+    // activate_segment(2);
+    // activate_segment(3);
 
-    show_stick('a');
-    show_stick('b');
-    show_stick('c');
-    show_stick('d');
-    show_stick('e');
-    show_stick('f');
-    show_stick('g');
+    // show_stick('a');
+    // show_stick('b');
+    // show_stick('c');
+    // show_stick('d');
+    // show_stick('e');
+    // show_stick('f');
+    // show_stick('g');
 
 
     while (1) {
